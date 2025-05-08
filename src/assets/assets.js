@@ -9,7 +9,8 @@ import pre_icon from './pre.png'
 import shuffle_icon from './shuffle.png'
 import loop_icon from './loop.png'
 import next_icon from './next.png'
-import play_icon from './play-pause.png'
+import play_icon from './play.png'
+import pause_icon from './pause.png'
 import queue_icon from './queue.png'
 import mic_icon from './mic.png'
 import mini_player_icon from './mini_player.jpg'
@@ -38,14 +39,14 @@ import img2 from './img5.jpg';
 // import img15 from './img15.jpg';
 // import img16 from './img16.jpg';
 
-// import song1 from './song1.mp3';
+import song1 from './song1.mp3';
 // import song2 from './song2.mp3';
 // import song3 from './song3.mp3';
 
 
 export const assets={
     home_icon,bell_icon,clock_icon,arrow_icon,search_icon,stack_icon,plus_icon, play_icon, pre_icon, shuffle_icon, next_icon, loop_icon, plays_icon, mic_icon, queue_icon,
-     speaker_icon, volume_icon, mini_player_icon, zoom_icon, arrow_left, arrow_right, melodify_logo
+     speaker_icon, volume_icon, mini_player_icon, zoom_icon, arrow_left, arrow_right, melodify_logo, pause_icon
 }
 export const albumsData = [
     {
@@ -98,7 +99,7 @@ export const songsData=[
         id: 0,
         name: "Song One",
         image: img1,
-        // file: song1,
+        file: song1,
         desc: "Put a smile on your face with these happy tunes",
         duration: "3:00"
       },
@@ -106,7 +107,7 @@ export const songsData=[
         id: 1,
         name: "Song Two",
         image: img2,
-        // file: song2,
+        file: song1,
         desc: "Put a smile on your face with these happy tunes",
         duration: "2:20"
       },
@@ -114,7 +115,7 @@ export const songsData=[
         id: 2,
         name: "Song Three",
         image: img1,
-        // file: song1,
+        file: song1,
         desc: "Put a smile on your face with these happy tunes",
         duration: "3:00"
       },
@@ -122,7 +123,7 @@ export const songsData=[
         id: 3,
         name: "Song Four",
         image: img2,
-        // file: song2,
+        file: song1,
         desc: "Put a smile on your face with these happy tunes",
         duration: "2:20"
       },
@@ -130,7 +131,7 @@ export const songsData=[
         id: 4,
         name: "Song Five",
         image: img1,
-        // file: song1,
+        file: song1,
         desc: "Put a smile on your face with these happy tunes",
         duration: "3:00"
       },
@@ -138,7 +139,7 @@ export const songsData=[
         id: 5,
         name: "Song Six",
         image: img1,
-        // file: song1,
+        file: song1,
         desc: "Put a smile on your face with these happy tunes",
         duration: "3:00"
       }

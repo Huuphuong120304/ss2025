@@ -1,21 +1,26 @@
-import React, {useContext} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Sidebar from "./components/Slidebar";
 import Player from "./components/Player";
 import Display from "./components/Display";
-import { PlayerContext } from "./components/PlayerContext";
+import { PlayerContext } from "./context/PlayerContext";
+import SpotifyLogin from "./components/Login";
+import PlayerContextProvider from "./context/PlayerContext"; 
 
-const App=() => {
 
-  const {audioRef,track} = useContext(PlayerContext); 
-  return(
-    <div className="h-screen bg-black">
+const App = () => {
+
+  const {audioRef,track}=useContext(PlayerContext);  
+  return (
+    <div className="h-screen bg-black">     
       <div className="h-[90%] flex">
-        <Sidebar/>
-        <Display/>
-      </div>
-      <Player/>
-      <audio ref ={audioRef} src ={track.file} preload='auto'></audio>
+            <Sidebar />
+            <Display />
+          </div>
+          <Player />
+          {/* { playStatus&& <ReactAudioPlayer  src={track.file}  autoPlay  controls/>  } */}
+          <audio ref={audioRef} src={track.file} preload="auto"></audio>
+                 
     </div>
   )
 }
-export default App
+export default App;
