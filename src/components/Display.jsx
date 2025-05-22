@@ -7,6 +7,10 @@ import { albumsData } from '../assets/assets'
 import Navbar from './Navbar'
 import Admin from '../pages/Admin'
 import SearchPage from '../pages/SearchPage'
+import CreatePlaylistForm from './CreatePlaylistForm'
+import PlayList from '../pages/PlayList'
+import { useBackground } from "../context/BackgroundContext";
+
 
 
 const Display = () => {
@@ -16,6 +20,7 @@ const Display = () => {
     const albumId = isAlbum ? location.pathname.slice(-1) : "";
     const [user, setUser] = useState(null)
     const navigate = useNavigate();
+    const { bgColor } = useBackground();
     useEffect(() => {
       const handleMessage = (event) => {
         if (event.origin !== 'http://localhost:5000') return; 
@@ -38,19 +43,36 @@ const Display = () => {
         displayRef.current.style.background = `#121212`;
       }
     }, [location]);
+    
     useEffect(() => {
-  fetch('http://localhost:5000/api/user', {
-    credentials: 'include' // <-- rất quan trọng
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.email) {
-        setUser(data)
+      fetch('http://localhost:5000/api/user', {
+        credentials: 'include' // <-- rất quan trọng
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.email) {
+            setUser(data)
+          } else {
+            navigate('/login')
+          }
+        });
+    }, []);
+
+    useEffect(() => {
+      const isPlaylist = location.pathname.includes("playlist");
+
+      if (isAlbum && !isNaN(Number(albumId)) && albumsData[Number(albumId)]) {
+        // Album -> dùng màu từ albumsData
+        const albumBg = albumsData[Number(albumId)].bgColor;
+        displayRef.current.style.background = `linear-gradient(${albumBg}, #121212)`;
+      } else if (isPlaylist && bgColor) {
+        // Playlist -> dùng màu từ ảnh
+        displayRef.current.style.background = `linear-gradient(${bgColor}, #121212)`;
       } else {
-        navigate('/login')
+        // Các trang khác
+        displayRef.current.style.background = `#121212`;
       }
-    });
-}, []);
+    }, [location, bgColor]);
 
     
 
@@ -64,6 +86,8 @@ const Display = () => {
             <Route path='/login' element={<SpotifyLogin/>}></Route>
             <Route path='/admin' element={<Admin/>}></Route>
             <Route path='/search' element={<SearchPage/>}></Route>
+            <Route path="/playlist/:playlistId" element={<PlayList />} />
+            <Route path="/create-playlist" element={<CreatePlaylistForm />} />
         </Routes>
     </div>
   )

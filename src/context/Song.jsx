@@ -7,6 +7,8 @@ export const SongProvider = ({ children }) => {
   const [albums, setAlbums] = useState([]);
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedSong, setSelectedSong] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const API = "http://localhost:5000/api";
 
@@ -88,7 +90,7 @@ export const SongProvider = ({ children }) => {
 
   return (
     <SongContext.Provider
-      value={{ albums, songs, loading, addAlbum, addSong, deleteSong }}
+      value={{ albums, songs, loading, addAlbum, addSong, deleteSong, selectedSong, setSelectedSong,  isPlaying, setIsPlaying }}
     >
       {children}
     </SongContext.Provider>

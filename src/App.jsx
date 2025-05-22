@@ -3,6 +3,7 @@ import Sidebar from "./components/SideBar";
 import Player from "./components/Player";
 import Display from "./components/Display";
 import { PlayerContext } from "./context/PlayerContext";
+import { BackgroundProvider } from "./context/BackgroundContext";
 
 
 const App = () => {
@@ -11,8 +12,10 @@ const App = () => {
   return (
     <div className="h-screen bg-black">     
       <div className="h-[90%] flex">
-            <Sidebar />
-            <Display />
+            <Sidebar />            
+            <BackgroundProvider>
+              <Display />
+            </BackgroundProvider>
           </div>
           <Player />
           {/* { playStatus&& <ReactAudioPlayer  src={track.file}  autoPlay  controls/>  } */}

@@ -1,120 +1,50 @@
-import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState([]);
-  const [isAuth, setIsAuth] = useState(false);
-  const [btnLoading, setBtnLoading] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [playlistSongs, setPlaylistSongs] = useState([]); // chứa ID các bài hát đã lưu
 
-//   async function registerUser(
-//     name,
-//     email,
-//     password,
-//     navigate,
-//     fetchSongs,
-//     fetchAlbums
-//   ) {
-//     setBtnLoading(true);
-//     try {
-//       const { data } = await axios.post("/api/user/register", {
-//         name,
-//         email,
-//         password,
-//       });
-
-//       toast.success(data.message);
-//       setUser(data.user);
-//       setIsAuth(true);
-//       setBtnLoading(false);
-//       navigate("/");
-//       fetchSongs();
-//       fetchAlbums();
-//     } catch (error) {
-//       toast.error(error.response.data.message);
-//       setBtnLoading(false);
-//     }
-//   }
-
-//   async function loginUser(email, password, navigate, fetchSongs, fetchAlbums) {
-//     setBtnLoading(true);
-//     try {
-//       const { data } = await axios.post("/api/user/login", {
-//         email,
-//         password,
-//       });
-
-//       toast.success(data.message);
-//       setUser(data.user);
-//       setIsAuth(true);
-//       setBtnLoading(false);
-//       navigate("/");
-//       fetchSongs();
-//       fetchAlbums();
-//     } catch (error) {
-//       toast.error(error.response.data.message);
-//       setBtnLoading(false);
-//     }
-//   }
-
-  async function fetchUser() {
+  const fetchPlaylistSongs = async () => {
     try {
-      const { data } = await axios.get("/api/user/me");
-
-      setUser(data);
-      setIsAuth(true);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsAuth(false);
-      setLoading(false);
+      const res = await fetch("http://localhost:5000/api/playlist/1/songs", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setPlaylistSongs(data.map((song) => song.id));
+    } catch (err) {
+      console.error("Lỗi tải playlist", err);
     }
-  }
+  };
 
-//   async function logoutUser() {
-//     try {
-//       const { data } = await axios.get("/api/user/logout");
-
-//       window.location.reload();
-//     } catch (error) {
-//       toast.error(error.response.data.message);
-//     }
-//   }
-
-  async function addToPlaylist(id) {
+  const addToPlaylist = async (songId) => {
     try {
-      const { data } = await axios.post("/api/user/song/" + id);
+      const res = await fetch("http://localhost:5000/api/playlist/1/add_song", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ song_id: songId }),
+      });
 
-      toast.success(data.message);
-      fetchUser();
-    } catch (error) {
-      toast.error(error.response.data.message);
+      if (res.ok) {
+        setPlaylistSongs((prev) => [...new Set([...prev, songId])]); // cập nhật client
+      } else {
+        alert("Không thể thêm bài hát.");
+      }
+    } catch (err) {
+      console.error("Lỗi khi thêm bài hát", err);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchUser();
+    fetchPlaylistSongs();
   }, []);
+
   return (
-    <UserContext.Provider
-      value={{
-        // registerUser,
-        user,
-        // isAuth,
-        // btnLoading,
-        // loading,
-        // loginUser,
-        // logoutUser,
-        addToPlaylist,
-      }}
-    >
+    <UserContext.Provider value={{ playlistSongs, addToPlaylist }}>
       {children}
-      <Toaster />
     </UserContext.Provider>
   );
 };
 
-export const UserData = () => useContext(UserContext);
+export const useUserData = () => useContext(UserContext);
