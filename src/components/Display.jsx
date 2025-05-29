@@ -10,6 +10,8 @@ import SearchPage from '../pages/SearchPage'
 import CreatePlaylistForm from './CreatePlaylistForm'
 import PlayList from '../pages/PlayList'
 import { useBackground } from "../context/BackgroundContext";
+import HistoryList from '../pages/HistoryList'
+import RecommendList from '../pages/RecommendList'
 
 
 
@@ -88,6 +90,8 @@ const Display = () => {
             <Route path='/search' element={<SearchPage/>}></Route>
             <Route path="/playlist/:playlistId" element={<PlayList />} />
             <Route path="/create-playlist" element={<CreatePlaylistForm />} />
+            <Route path="/history" element={<HistoryList/>}/>
+            <Route path="/re" element={<RecommendList/>}/>
         </Routes>
     </div>
   )

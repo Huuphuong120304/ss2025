@@ -7,6 +7,7 @@ const AddSongForm = () => {
   const [desc, setDesc] = useState("");
   const [duration, setDuration] = useState("3:00");
   const [albumId, setAlbumId] = useState("");
+  const [gen, setGen]=useState("");
   const [image, setImage] = useState(null);
   const [audio, setAudio] = useState(null);
   const [imgPreview, setImgPreview] = useState(null);
@@ -19,6 +20,7 @@ const AddSongForm = () => {
     formData.append("desc", desc);
     formData.append("duration", duration);
     formData.append("album_id", albumId);
+    formData.append("genre", gen)
     formData.append("image", image);
     formData.append("file", audio);
 
@@ -27,12 +29,14 @@ const AddSongForm = () => {
       setDesc("");
       setDuration("3:00");
       setAlbumId("");
+      setGen("");
       setImage(null);
       setAudio(null);
       setImgPreview(null);
       setAudioName("");
     });
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="bg-[#181818] p-6 rounded-lg mt-6">
@@ -51,6 +55,14 @@ const AddSongForm = () => {
         onChange={(e) => setDesc(e.target.value)}
         className="auth-input mb-2"
       />
+      <input
+        type="text"
+        placeholder="Genre"
+        value={gen}
+        onChange={(e) => setGen(e.target.value)}
+        className="auth-input mb-2"
+      />
+      
       <select
         className="auth-input mb-2"
         value={albumId}
@@ -63,6 +75,8 @@ const AddSongForm = () => {
           </option>
         ))}
       </select>
+      
+
       <input
         type="file"
         accept="image/*"
@@ -77,11 +91,25 @@ const AddSongForm = () => {
         type="file"
         accept="audio/*"
         onChange={(e) => {
-          setAudio(e.target.files[0]);
-          setAudioName(e.target.files[0]?.name || "");
+          const file = e.target.files[0];
+          if (file) {
+            setAudio(file);
+            setAudioName(file.name);
+
+            const audioElement = document.createElement("audio");
+            audioElement.src = URL.createObjectURL(file);
+            audioElement.addEventListener("loadedmetadata", () => {
+              const minutes = Math.floor(audioElement.duration / 60);
+              const seconds = Math.floor(audioElement.duration % 60)
+                .toString()
+                .padStart(2, "0");
+              setDuration(`${minutes}:${seconds}`);
+            });
+          }
         }}
         className="auth-input mb-2"
       />
+
       {audioName && <p className="text-sm text-gray-400 mb-2">{audioName}</p>}
       <button disabled={loading} className="auth-btn w-full">
         {loading ? "Uploading..." : "Add Song"}
