@@ -6,12 +6,11 @@ const SongList = () => {
   const { songs } = useSongData();
 
   return (
-    <div  className="p-6">
-      {/* <h2 className="text-2xl font-bold text-white mb-4">Tất cả bài hát</h2> */}
+    <div>      
       {songs.length === 0 ? (
         <p className="text-slate-300">No Songs</p>
       ) : (
-        <div className="flex gap-4 overflow-x-auto pb-2">
+        <div className="flex  overflow-x-auto pb-2">
           {songs.map((song) => (
             <Song
               key={song.id}
@@ -20,6 +19,7 @@ const SongList = () => {
               desc={song.desc}
               image={song.image}
               file={song.file}
+              queue={songs}
             />
           ))}
         </div>

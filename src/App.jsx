@@ -19,7 +19,9 @@ const App = () => {
           </div>
           <Player />
           {/* { playStatus&& <ReactAudioPlayer  src={track.file}  autoPlay  controls/>  } */}
-          <audio ref={audioRef} src={track.file} preload="auto"></audio>
+          {track && track.file ? (<audio ref={audioRef} src={track.file} preload="metadata" />) : null}
+
+
                  
     </div>
   )
