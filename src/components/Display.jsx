@@ -9,8 +9,8 @@ import SearchPage from '../pages/SearchPage';
 import CreatePlaylistForm from './CreatePlaylistForm';
 import PlayList from '../pages/PlayList';
 import { useBackground } from "../context/BackgroundContext";
-import HistoryList from '../pages/HistoryList';
-import RecommendList from '../pages/RecommendList';
+import DisplaySong from '../pages/SongDetail'
+
 
 const Display = () => {
   const displayRef = useRef();
@@ -49,8 +49,9 @@ const Display = () => {
   useEffect(() => {
     const isPlaylist = location.pathname.includes("playlist");
     const isAlbum = location.pathname.includes("album");
+    const isSong = location.pathname.includes("song"); 
 
-    if ((isPlaylist || isAlbum) && bgColor) {
+    if ((isPlaylist || isAlbum || isSong) && bgColor) {
       displayRef.current.style.background = `linear-gradient(${bgColor}, #121212)`;
     } else {
       displayRef.current.style.background = `#121212`;
@@ -68,8 +69,8 @@ const Display = () => {
         <Route path='/search' element={<SearchPage />} />
         <Route path="/playlist/:playlistId" element={<PlayList />} />
         <Route path="/create-playlist" element={<CreatePlaylistForm />} />
-        {/* <Route path="/history" element={<HistoryList />} />
-        <Route path="/re" element={<RecommendList />} /> */}
+        <Route path="/song/:id" element={<DisplaySong />} />
+        
       </Routes>
     </div>
   );

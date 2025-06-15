@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 import { useUserData } from "../context/User";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Song = ({ id, name, desc, image, queue }) => {
   const { playWithId } = useContext(PlayerContext);
   const { addToPlaylist, playlistSongs } = useUserData();
+  const navigate = useNavigate();
 
   const isSaved = playlistSongs.includes(id);
 
@@ -16,9 +18,14 @@ const Song = ({ id, name, desc, image, queue }) => {
     }
   };
 
+  const handleClick  = () => {
+    playWithId(id, queue);
+    navigate(`/song/${id}`);
+  };
+
   return (
     <div
-      onClick={() => playWithId(id,queue)}
+      onClick={ handleClick}
       className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26] relative"
     >
       <img className="rounded" src={image} alt={name} />
